@@ -1,19 +1,38 @@
 # zoko-mcp
 
-Read-only MCP server for Zoko WhatsApp message templates.
+Read-only MCP server for [Zoko](https://www.zoko.io) WhatsApp message templates.
 
 Tools:
+
 - `list_templates` - all approved templates
 - `get_template` - one template by id or name
 
-Config:
+## Install
+
+```sh
+git clone https://github.com/rocktimsaikia/zoko-mcp
+cd zoko-mcp
+npm install
+```
+
+Get your API key from Zoko: Settings -> API keys.
+
+## Use
+
+Claude Code:
+
+```sh
+claude mcp add zoko -e ZOKO_API_KEY=your-key -- node /abs/path/to/zoko-mcp/server.js
+```
+
+Or any MCP client, via config:
 
 ```json
 {
   "mcpServers": {
     "zoko": {
       "command": "node",
-      "args": ["/home/rocktim/zoko-mcp/server.js"],
+      "args": ["/abs/path/to/zoko-mcp/server.js"],
       "env": { "ZOKO_API_KEY": "your-key" }
     }
   }
