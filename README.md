@@ -12,6 +12,8 @@ Read-only MCP server for integrating [Zoko](https://www.zoko.io) with AI assista
 2. `get_template` - one template by its exact `templateId`.
 3. `list_webhooks` - every webhook on the account. No arguments.
 4. `get_webhook` - one webhook by its id.
+5. `list_groups` - every active WhatsApp group. No arguments.
+6. `get_group` - one group, including its participants, by id.
 
 Zoko exposes no per-id endpoint for templates, so `get_template` filters the full list. That
 call takes ~40s and returns ~1.3MB, so the list is cached in memory for an hour. Webhooks are

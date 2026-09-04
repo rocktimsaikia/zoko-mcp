@@ -39,9 +39,14 @@ export async function getTemplates({ apikey, fresh = false } = {}) {
   return data
 }
 
-// ponytail: webhooks are ~14KB and /webhook/{id} exists, so no cache, no filtering.
+// ponytail: webhooks and groups are small and both have a /{id} endpoint, so no
+// cache, no filtering. Only templates need the workaround.
 export const listWebhooks = (apikey) => request('/webhook', apikey)
 export const getWebhook = (id, apikey) => request(`/webhook/${encodeURIComponent(id)}`, apikey)
+
+const GROUPS = '/channels/whatsapp/cloud/group'
+export const listGroups = (apikey) => request(GROUPS, apikey)
+export const getGroup = (id, apikey) => request(`${GROUPS}/${encodeURIComponent(id)}`, apikey)
 
 // ponytail: no per-id endpoint exists (GET /account/templates/{id} is a 404), and
 // templateId is not unique across languages, so filter rather than find.
@@ -83,6 +88,19 @@ server.tool(
   { id: z.string().describe('webhook id, a uuid') },
   async ({ id }) => ({
     content: [{ type: 'text', text: JSON.stringify(await getWebhook(id), null, 2) }],
+  }),
+)
+
+server.tool('list_groups', 'List all active WhatsApp groups on the Zoko account', {}, async () => ({
+  content: [{ type: 'text', text: JSON.stringify(await listGroups(), null, 2) }],
+}))
+
+server.tool(
+  'get_group',
+  'Get one WhatsApp group, including its participants, by id',
+  { id: z.string().describe('group id, a customer uuid') },
+  async ({ id }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await getGroup(id), null, 2) }],
   }),
 )
 
