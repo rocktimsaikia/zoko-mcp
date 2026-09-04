@@ -1,6 +1,6 @@
 # zoko-mcp
 
-Read-only MCP server for [Zoko](https://www.zoko.io) WhatsApp message templates.
+Read-only MCP server for integrating [Zoko](https://www.zoko.io) with AI assistants like Claude.
 
 ## Tools
 
