@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node test.js",
     "format": "biome check --write .",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "keywords": [
     "mcp",
