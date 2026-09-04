@@ -38,7 +38,7 @@ export function findTemplate(templates, templateId) {
   return templates.filter((t) => t.templateId === templateId)
 }
 
-const server = new McpServer({ name: 'zoko', version: '0.1.0' })
+const server = new McpServer({ name: 'zoko', version: '1.0.0' })
 
 server.tool('list_templates', 'List all approved Zoko WhatsApp message templates', {}, async () => ({
   content: [{ type: 'text', text: JSON.stringify(await getTemplates(), null, 2) }],
