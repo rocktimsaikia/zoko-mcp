@@ -1,14 +1,18 @@
 {
   "name": "zoko-mcp",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Read-only MCP server for Zoko WhatsApp message templates",
+  "main": "server.js",
   "scripts": {
     "test": "node test.js",
     "format": "biome check --write .",
     "lint": "biome check ."
   },
-  "keywords": [],
+  "keywords": [
+    "mcp",
+    "zoko",
+    "whatsapp"
+  ],
   "type": "module",
   "bin": {
     "zoko-mcp": "server.js"
@@ -21,5 +25,15 @@
     "@biomejs/biome": "^2.5.12"
   },
   "license": "MIT",
-  "author": "Rocktim Saikia"
+  "author": "Rocktim Saikia",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rocktimsaikia/zoko-mcp.git"
+  },
+  "files": [
+    "server.js"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
 }
