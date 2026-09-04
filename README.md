@@ -11,21 +11,6 @@ Both read `GET /account/templates`, the only endpoint Zoko exposes for templates
 per-id endpoint, so `get_template` filters the full list. That call takes ~40s and returns
 ~1.3MB, so the list is cached in memory for an hour.
 
-A template row looks like:
-
-```json
-{
-  "channel": "whatsapp",
-  "isRichTemplate": false,
-  "templateType": "buttonTemplate",
-  "templateId": "signup_user_mql_nudge_step1_sep_2026",
-  "templateLanguage": "en",
-  "templateDesc": "Body: Hi {{1}}, ...\nButtons: [Book trial lesson] {{2}}",
-  "templateVariableCount": 4,
-  "active": true
-}
-```
-
 ## Install
 
 ```sh
