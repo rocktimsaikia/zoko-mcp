@@ -1,7 +1,7 @@
 {
   "name": "zoko-mcp",
   "version": "1.0.0",
-  "description": "Read-only MCP server for Zoko WhatsApp message templates",
+  "description": "Read-only MCP server for integrating Zoko with AI assistants like Claude",
   "main": "server.js",
   "scripts": {
     "test": "node test.js",
