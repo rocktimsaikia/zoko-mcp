@@ -11,22 +11,14 @@ Both read `GET /account/templates`, the only endpoint Zoko exposes for templates
 per-id endpoint, so `get_template` filters the full list. That call takes ~40s and returns
 ~1.3MB, so the list is cached in memory for an hour.
 
-## Install
-
-```sh
-git clone https://github.com/rocktimsaikia/zoko-mcp
-cd zoko-mcp
-npm install
-```
+## Setup
 
 Get your API key from [Zoko → API & Webhooks](https://app.live.zoko.io/more/webhooks/api).
-
-## Use
 
 Claude Code:
 
 ```sh
-claude mcp add zoko -e ZOKO_API_KEY=your-key -- node /abs/path/to/zoko-mcp/server.js
+claude mcp add zoko -e ZOKO_API_KEY=your-key -- npx -y zoko-mcp
 ```
 
 Or any MCP client, via config:
@@ -35,8 +27,8 @@ Or any MCP client, via config:
 {
   "mcpServers": {
     "zoko": {
-      "command": "node",
-      "args": ["/abs/path/to/zoko-mcp/server.js"],
+      "command": "npx",
+      "args": ["-y", "zoko-mcp"],
       "env": { "ZOKO_API_KEY": "your-key" }
     }
   }
