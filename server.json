@@ -3,7 +3,7 @@
   "name": "io.github.rocktimsaikia/zoko-mcp",
   "title": "Zoko",
   "description": "Read-only MCP server for integrating Zoko with AI assistants like Claude.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "url": "https://github.com/rocktimsaikia/zoko-mcp",
     "source": "github"
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "zoko-mcp",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "transport": {
         "type": "stdio"
       },

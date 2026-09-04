@@ -1,6 +1,6 @@
 {
   "name": "zoko-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Read-only MCP server for integrating Zoko with AI assistants like Claude",
   "main": "server.js",
   "scripts": {
@@ -35,5 +35,6 @@
   ],
   "engines": {
     "node": ">=18"
-  }
+  },
+  "mcpName": "io.github.rocktimsaikia/zoko-mcp"
 }
