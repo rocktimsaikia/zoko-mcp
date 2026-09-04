@@ -19,5 +19,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.12"
-  }
+  },
+  "license": "MIT",
+  "author": "Rocktim Saikia"
 }

@@ -38,3 +38,7 @@ Or any MCP client, via config:
   }
 }
 ```
+
+## License
+
+MIT © Rocktim Saikia
