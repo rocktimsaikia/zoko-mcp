@@ -4,8 +4,8 @@ Read-only MCP server for [Zoko](https://www.zoko.io) WhatsApp message templates.
 
 Tools:
 
-- `list_templates` - all approved templates
-- `get_template` - one template by id or name
+1. `list_templates` - all approved templates
+2. `get_template` - one template by id or name
 
 ## Install
 
