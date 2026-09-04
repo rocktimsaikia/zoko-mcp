@@ -15,7 +15,7 @@ cd zoko-mcp
 npm install
 ```
 
-Get your API key from [Zoko -> API & Webhooks](https://app.live.zoko.io/more/webhooks/api).
+Get your API key from [Zoko → API & Webhooks](https://app.live.zoko.io/more/webhooks/api).
 
 ## Use
 
