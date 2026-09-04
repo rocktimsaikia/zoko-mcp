@@ -8,14 +8,22 @@ const TTL_MS = 60 * 60 * 1000
 
 let cache = null
 
-// ponytail: Zoko drops the connection partway through this ~1.3MB body often
-// enough to matter, so one retry. No backoff, the failure is instant.
-async function fetchTemplates(apikey) {
+// ponytail: Zoko drops the connection partway through the ~1.3MB template body
+// often enough to matter, so one retry. No backoff, the failure is instant.
+async function request(path, apikey = process.env.ZOKO_API_KEY) {
+  if (!apikey) throw new Error('ZOKO_API_KEY not set')
   let lastErr
   for (let i = 0; i < 2; i++) {
+    let res
     try {
-      const res = await fetch(`${API}/account/templates`, { headers: { apikey } })
-      if (!res.ok) throw new Error(`Zoko ${res.status}: ${(await res.text()).slice(0, 200)}`)
+      res = await fetch(`${API}${path}`, { headers: { apikey } })
+    } catch (err) {
+      lastErr = err
+      continue
+    }
+    // A 4xx is the answer, not a blip. Only the dropped body is worth retrying.
+    if (!res.ok) throw new Error(`Zoko ${res.status}: ${(await res.text()).slice(0, 200)}`)
+    try {
       return await res.json()
     } catch (err) {
       lastErr = err
@@ -24,13 +32,16 @@ async function fetchTemplates(apikey) {
   throw lastErr
 }
 
-export async function getTemplates({ apikey = process.env.ZOKO_API_KEY, fresh = false } = {}) {
-  if (!apikey) throw new Error('ZOKO_API_KEY not set')
+export async function getTemplates({ apikey, fresh = false } = {}) {
   if (!fresh && cache && Date.now() - cache.at < TTL_MS) return cache.data
-  const data = await fetchTemplates(apikey)
+  const data = await request('/account/templates', apikey)
   cache = { at: Date.now(), data }
   return data
 }
+
+// ponytail: webhooks are ~14KB and /webhook/{id} exists, so no cache, no filtering.
+export const listWebhooks = (apikey) => request('/webhook', apikey)
+export const getWebhook = (id, apikey) => request(`/webhook/${encodeURIComponent(id)}`, apikey)
 
 // ponytail: no per-id endpoint exists (GET /account/templates/{id} is a 404), and
 // templateId is not unique across languages, so filter rather than find.
@@ -60,6 +71,19 @@ server.tool(
       ],
     }
   },
+)
+
+server.tool('list_webhooks', 'List all webhooks configured on the Zoko account', {}, async () => ({
+  content: [{ type: 'text', text: JSON.stringify(await listWebhooks(), null, 2) }],
+}))
+
+server.tool(
+  'get_webhook',
+  'Get one Zoko webhook by its id',
+  { id: z.string().describe('webhook id, a uuid') },
+  async ({ id }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await getWebhook(id), null, 2) }],
+  }),
 )
 
 if (process.argv[1]?.endsWith('server.js')) await server.connect(new StdioServerTransport())
