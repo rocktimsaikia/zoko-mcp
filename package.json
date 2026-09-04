@@ -35,6 +35,5 @@
   ],
   "engines": {
     "node": ">=18"
-  },
-  "mcpName": "io.github.rocktimsaikia/zoko-mcp"
+  }
 }
