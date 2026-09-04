@@ -14,10 +14,16 @@ Read-only MCP server for integrating [Zoko](https://www.zoko.io) with AI assista
 4. `get_webhook` - one webhook by its id.
 5. `list_groups` - every active WhatsApp group. No arguments.
 6. `get_group` - one group, including its participants, by id.
+7. `list_customers` - one page of 100 WhatsApp customers.
+8. `get_customer` - one customer by id, with channels, tags and assignment.
 
 Zoko exposes no per-id endpoint for templates, so `get_template` filters the full list. That
 call takes ~40s and returns ~1.3MB, so the list is cached in memory for an hour. Webhooks are
 small and do have a per-id endpoint, so they are fetched fresh every time.
+
+`/customer` allows one request per 300 seconds, so pages are cached for ten minutes. With
+~1.1M customers across ~10,900 pages, listing them all is not practical - use it to sample,
+and `get_customer` to look one up.
 
 ## Setup
 

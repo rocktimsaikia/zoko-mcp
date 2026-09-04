@@ -4,9 +4,10 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod'
 
 const API = 'https://chat.zoko.io/v2'
-const TTL_MS = 60 * 60 * 1000
+const HOUR = 60 * 60 * 1000
+const TEN_MIN = 10 * 60 * 1000
 
-let cache = null
+const cache = new Map()
 
 // ponytail: Zoko drops the connection partway through the ~1.3MB template body
 // often enough to matter, so one retry. No backoff, the failure is instant.
@@ -32,12 +33,23 @@ async function request(path, apikey = process.env.ZOKO_API_KEY) {
   throw lastErr
 }
 
-export async function getTemplates({ apikey, fresh = false } = {}) {
-  if (!fresh && cache && Date.now() - cache.at < TTL_MS) return cache.data
-  const data = await request('/account/templates', apikey)
-  cache = { at: Date.now(), data }
+async function cached(path, ttl, apikey, fresh) {
+  const hit = cache.get(path)
+  if (!fresh && hit && Date.now() - hit.at < ttl) return hit.data
+  const data = await request(path, apikey)
+  cache.set(path, { at: Date.now(), data })
   return data
 }
+
+export const getTemplates = ({ apikey, fresh = false } = {}) =>
+  cached('/account/templates', HOUR, apikey, fresh)
+
+// ponytail: /customer allows one request per 300s, so the cache is not an
+// optimisation here - without it a second call in the same minute just 429s.
+export const listCustomers = ({ page = 1, apikey, fresh = false } = {}) =>
+  cached(`/customer?channel=whatsapp&page=${page}`, TEN_MIN, apikey, fresh)
+
+export const getCustomer = (id, apikey) => request(`/customer/${encodeURIComponent(id)}`, apikey)
 
 // ponytail: webhooks and groups are small and both have a /{id} endpoint, so no
 // cache, no filtering. Only templates need the workaround.
@@ -101,6 +113,24 @@ server.tool(
   { id: z.string().describe('group id, a customer uuid') },
   async ({ id }) => ({
     content: [{ type: 'text', text: JSON.stringify(await getGroup(id), null, 2) }],
+  }),
+)
+
+server.tool(
+  'list_customers',
+  'List WhatsApp customers, one page of 100 at a time. Zoko allows one request per 300 seconds, so pages are cached for ten minutes and fetching every page is not practical.',
+  { page: z.number().int().min(1).default(1).describe('1-based page number') },
+  async ({ page }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await listCustomers({ page }), null, 2) }],
+  }),
+)
+
+server.tool(
+  'get_customer',
+  'Get one customer by id, including their channels, tags and assignment',
+  { id: z.string().describe('customer id, a uuid') },
+  async ({ id }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await getCustomer(id), null, 2) }],
   }),
 )
 
