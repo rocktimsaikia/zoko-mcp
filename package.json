@@ -1,0 +1,23 @@
+{
+  "name": "zoko-mcp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "format": "biome check --write .",
+    "lint": "biome check ."
+  },
+  "keywords": [],
+  "type": "module",
+  "bin": {
+    "zoko-mcp": "server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.12"
+  }
+}
