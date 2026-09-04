@@ -5,8 +5,7 @@ Read-only MCP server for [Zoko](https://www.zoko.io) WhatsApp message templates.
 ## Tools
 
 1. `list_templates` - every approved template. No arguments.
-2. `get_template` - one template by its exact `templateId`, e.g. `signup_user_mql_nudge_step1_sep_2026`.
-   Returns an array, since the same `templateId` can exist in more than one language.
+2. `get_template` - one template by its exact `templateId`.
 
 Both read `GET /account/templates`, the only endpoint Zoko exposes for templates. There is no
 per-id endpoint, so `get_template` filters the full list. That call takes ~40s and returns
