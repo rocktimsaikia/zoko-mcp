@@ -2,6 +2,10 @@
 
 Read-only MCP server for integrating [Zoko](https://www.zoko.io) with AI assistants like Claude.
 
+[![Test](https://github.com/rocktimsaikia/zoko-mcp/actions/workflows/test.yml/badge.svg)](https://github.com/rocktimsaikia/zoko-mcp/actions/workflows/test.yml)
+[![Release](https://github.com/rocktimsaikia/zoko-mcp/actions/workflows/release.yml/badge.svg)](https://github.com/rocktimsaikia/zoko-mcp/actions/workflows/release.yml)
+[![npm](https://img.shields.io/npm/v/zoko-mcp)](https://www.npmjs.com/package/zoko-mcp)
+
 ## Tools
 
 1. `list_templates` - every approved template. No arguments.
